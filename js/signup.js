@@ -1,4 +1,4 @@
- const API_BASE = "http://localhost:3000";
+ const API_BASE = "https://quick-learn-nja0.onrender.com/";
 
     document.getElementById("signupForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -27,4 +27,5 @@
       } catch (err) {
         resEl.innerText = "Server error.";
       }
+
     });
