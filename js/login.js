@@ -15,7 +15,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   loginBtn.disabled = true;
 
   try {
-    const res = await fetch('http://localhost:3000/login', {
+    const res = await fetch('https://quick-learn-nja0.onrender.com//login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -39,4 +39,5 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     loginBtn.disabled = false;
     errorMsg.textContent = 'Error: ' + err.message;
   }
+
 });
