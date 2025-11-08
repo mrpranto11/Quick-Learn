@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://quick-learn-nja0.onrender.com/";
 
     document.getElementById("otpForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -31,4 +31,5 @@ const API_BASE = "http://localhost:3000";
       } catch (err) {
         resEl.innerText = "Server error.";
       }
+
     });
