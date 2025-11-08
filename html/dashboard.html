@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Quick Learn</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #00c6ff, #d2dbe4);
+      color: white;
+      text-align: center;
+      padding-top: 100px;
+      margin: 0;
+    }
+
+    /* ✅ Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+
+    header img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* Center text + logo */
+  gap: 8px;
+  position: relative;
+}
+    .brand h2 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    /* Three dot menu icon (left side) */
+    .menu-icon {
+      font-size: 26px;
+      cursor: pointer;
+      user-select: none;
+      color: white;
+    }
+
+    /* Dropdown menu */
+    .dropdown {
+      position: absolute;
+      left: 20px;
+      top: 60px;
+      background-color: white;
+      color: black;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      min-width: 160px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: black;
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .dropdown a:hover {
+      background-color: #0072ff;
+      color: white;
+    }
+
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .profile {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .btn {
+      background-color: white;
+      color: #408eed;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    .warning {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 25px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+    }
+
+    .ds {
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      width: 100px;
+      height: 120px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Header Section -->
+  <header>
+    <div class="menu-icon" id="menuIcon">⋮</div>
+    <div class="brand">
+      <img src="../photos/Logo.png" alt="Quick Learn Logo">
+      <h2 style="color: #408eed;">Quick</h2>
+      <h2 style="color: rgb(150, 83, 36);">Learn</h2>
+    </div>
+  </header>
+
+  <!-- Dropdown Menu -->
+  <div class="dropdown" id="dropdownMenu">
+    <div class="profile">
+      <img src="https://i.ibb.co/tqTdnHk/profile.png" alt="Profile">
+      <p><b>
+        <script>
+        if(data.success)
+           {
+            mainDiv.innerHTML = `
+            <span id="username">${data.name}</span>
+            `;
+           }
+      </script></b></p>
+    </div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="profile.html">Profile</a>
+    <a href="courses.html">My Courses</a>
+    <a href="settings.html">Settings</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+
+  <!-- ✅ Main Dashboard Content -->
+  <div id="main"></div>
+
+  <script>
+    const menuIcon = document.getElementById('menuIcon');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    // Toggle dropdown on click
+    menuIcon.addEventListener('click', (event) => {
+      event.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (event) => {
+      if (!dropdownMenu.contains(event.target) && !menuIcon.contains(event.target)) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+
+    async function fetchUser() {
+      const email = sessionStorage.getItem("userEmail");
+      const mainDiv = document.getElementById("main");
+
+      if (!email) {
+        mainDiv.innerHTML = `
+          <div class="warning">
+            <h2>⚠️ Access Denied!</h2>
+            <p>You need to <b>login</b> or <b>signup</b> first to access the dashboard.</p>
+            <button class="btn" onclick="window.location.href='login.html'">Login</button>
+            <button class="btn" onclick="window.location.href='signup.html'">Sign Up</button>
+          </div>`;
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/getUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          mainDiv.innerHTML = `
+            <h1>Welcome, <span id="username">${data.name}</span> 👋</h1>
+           
+            <button class="ds" onclick="window.location.href='../COURSE/ds.html'">
+              <h5 style="color: blue;">Data</h5>
+              <h5 style="color: orange;">Structure</h5>
+            </button>
+
+            <button class="ds" onclick="window.location.href='../COURSE/ds.html'">
+              <h5 style="color: blue;">OOP</h5><h5 style="color: orange;">IN JAVA</h5>
+            </button>
+            <br>
+            `;
+        } else {
+          mainDiv.innerHTML = `
+            <div class="warning">
+              <h2>⚠️ Session Expired!</h2>
+              <p>Please login again to continue.</p>
+              <button class="btn" onclick="window.location.href='login.html'">Login</button>
+            </div>`;
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        mainDiv.innerHTML = `
+          <div class="warning">
+            <h2>⚠️ Error</h2>
+            <p>Unable to fetch user data. Please try logging in again.</p>
+            <button class="btn" onclick="window.location.href='login.html'">Login</button>
+          </div>`;
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem("userEmail");
+      alert("Logged out successfully!");
+      window.location.href = "login.html";
+    }
+
+    fetchUser();
+  </script>
+</body>
+</html>

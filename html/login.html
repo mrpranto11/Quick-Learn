@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Quick Learn</title>
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+  <form id="loginForm">
+    <img src="../photos/Logo.png" alt="Quick Learn Logo" class="logo">
+
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+
+    <div class="bottom-links" style="margin-bottom: 15px;">
+      <a href="forgatepassword.html">Forgot Password?</a>
+    </div>
+
+    <button type="submit" id="loginBtn">Login</button>
+
+    <div class="bottom-links">
+      Don't have an account? <a href="signup.html">Sign Up</a>
+    </div>
+
+    <p id="errorMsg"></p>
+  </form>
+
+  <script src="../js/login.js"></script>
+</body>
+</html>
