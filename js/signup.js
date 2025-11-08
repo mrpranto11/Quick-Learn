@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwbmEdr-24yknATKpGpuOtWzvyJCv5AC91ZqqKDeeKWTTxWQ8jX1c-GbmaL9fYkpw0Y/exec";
+const WEB_APP_URL = "https://quick-learn-nja0.onrender.com/";
 
 document.getElementById('signupForm').addEventListener('submit', function(e) {
   e.preventDefault();
